@@ -1,0 +1,3 @@
+# kutyatal-odi
+YOU CANNOT USE THIS CODE IN ANY WAY!
+FUCK OFF!!
