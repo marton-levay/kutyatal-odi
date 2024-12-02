@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" style="background: radial-gradient(circle, rgba(59,56,65,1) 35%, rgba(37,36,40,1) 100%);">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layered Image Carousel with Styled Arrows</title>
+    <title>Product Customization</title>
     <style>
-        /* Basic styling for carousel container */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
         .carousel-container {
             position: relative;
             width: 650px;
@@ -16,224 +20,346 @@
             border: 1px solid #ccc;
         }
 
-        /* Layer styling, all layers stacked on top of each other */
-        .layer {
+        .carousel {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            display: none; /* Hide initially */
         }
 
-        .layer.active {
+        .carousel img {
+            width: 100%;
+            display: none;
+        }
+
+        .carousel img.active {
             display: block;
         }
 
-        /* Styling for control buttons */
-        .controls-container {
+        .controls {
             display: flex;
-            justify-content: center;
             align-items: center;
+            width: 300px;
+        }
+
+        .dropdown, .checkboxes {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .price-display {
+            font-weight: bold;
+            font-size: 1.2em;
             margin-top: 20px;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .control-title {
-            display: flex;
-            align-items: center;
+            text-align: center;
         }
 
         .arrow-button {
-            background-color: white;
-            border: 2px solid #ccc;
+            background-color: #3c3c3c;
+            border: 2px solid #777;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             cursor: pointer;
-            margin: 0 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: 0.3s;
         }
 
         .arrow-button:hover {
-            background-color: #eee;
-            border-color: #888;
+            background-color: #555;
+            border-color: #999;
         }
 
         .arrow-icon {
             font-size: 18px;
-            font-weight: bold;
-            color: black;
+            color: white;
         }
 
-        /* Styling for image labels */
-        .image-label {
-            font-size: 20px;
+        .title {
+            flex: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
             font-weight: bold;
-            margin: 0 10px;
-            width: 100px;
-            text-align: center;
-            color: #FFFFFF;
+        }
+
+        .control-container {
+            margin-top: 20px;
+            display: flex;
+            width: 100%;
+            justify-content: center
         }
 
         .description {
-            font-size: 16px;
-            text-align: center;
+            font-size: 14px;
             margin-top: 5px;
-            color: #FFFFFF;
+        }
+
+        .control-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
 
-<div class="carousel-container">
+<!-- Image Carousels -->
+<div style="display: flex; flex-direction: column; ">
+    <div class="carousel-container">
 
+        <div class="carousel" id="lab-carousel"></div>
+        <div class="carousel" id="asztallap-carousel"></div>
+        <div class="carousel" id="tal-carousel"></div>
 
-    <div class="layer layer1 active">
-        <img src="lab1.png" alt="lab1" style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer1">
-        <img src="lab2.png" alt="lab2" style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer1">
-        <img src="lab3.png" alt="lab3" style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer1">
-        <img src="lab4.png" alt="lab4" style="width:100%; height:100%;">
     </div>
 
-    <div class="layer layer2 active">
-        <img src="asztallap1.png" alt="asztallap1" style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer2">
-        <img src="asztallap2.png" alt="asztallap2" style="width:100%; height:100%;">
-    </div>
-
-    <div class="layer layer3 active">
-        <img src="tal1.png" alt="tal1"
-             style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer3">
-        <img src="tal2.png" alt="tal2" style="width:100%; height:100%;">
-    </div>
-    <div class="layer layer3">
-        <img src="tal3.png" alt="tal3" style="width:100%; height:100%;">
-    </div>
-
-    <div class="layer layer4 active">
-        <img src="fogantyu.png" alt="fogantyu" style="width:100%; height:100%;">
-    </div>
-
-    <div class="layer layer5 active">
-        <img src="gravirozas.png" alt="fogantyu" style="width:100%; height:100%;">
-    </div>
-
-</div>
-
-<div class="controls-container">
-    <div class="control-group">
-        <div class="control-title">
-            <button class="arrow-button prev-btn"><span class="arrow-icon">&#9664;</span></button>
-            <div>
-                <span class="image-label" id="label1">Láb</span>
+    <div class="control-container">
+        <div class="control-column">
+            <div class="controls">
+                <button class="arrow-button prev-btn" onclick="prevImage('asztallap')"><span
+                        class="arrow-icon">&#9664;</span></button>
+                <div class="title">
+                    <span class="image-label">Asztallap</span>
+                </div>
+                <button class="arrow-button next-btn" onclick="nextImage('asztallap')"><span
+                        class="arrow-icon">&#9654;</span></button>
             </div>
-            <button class="arrow-button next-btn"><span class="arrow-icon">&#9654;</span></button>
+            <div class="description" id="asztallap-description">Világos fa (szélezett)</div>
+            <select id="asztallap-dropdown" disabled onchange="updatePrice()"></select>
         </div>
-        <div class="description" id="desc1">Állítható lábak 1</div>
-    </div>
 
-    <div class="control-group" id="asztallap">
-        <div class="control-title">
-            <button class="arrow-button prev-btn"><span class="arrow-icon">&#9664;</span></button>
-            <div>
-                <span class="image-label" id="label2">Asztallap</span>
+        <div class="control-column">
+            <div class="controls">
+                <button class="arrow-button prev-btn" onclick="prevImage('lab')"><span class="arrow-icon">&#9664;</span>
+                </button>
+                <div class="title">
+                    <span class="image-label">Láb</span>
+                </div>
+                <button class="arrow-button next-btn" onclick="nextImage('lab')"><span class="arrow-icon">&#9654;</span>
+                </button>
+
             </div>
-            <button class="arrow-button next-btn"><span class="arrow-icon">&#9654;</span></button>
-        </div>
-        <div class="description" id="desc2">Világos fa (szélezett)</div>
-    </div>
-
-    <div class="control-group">
-        <div class="control-title">
-            <button class="arrow-button prev-btn"><span class="arrow-icon">&#9664;</span></button>
-            <div>
-                <span class="image-label" id="label3">Tál</span>
+            <div class="description" id="lab-description">Világos fa (szélezett)</div>
+            <div class="dropdown">
+                <select id="lab-dropdown" onchange="updatePrice()"></select>
             </div>
-            <button class="arrow-button next-btn"><span class="arrow-icon">&#9654;</span></button>
         </div>
-        <div class="description" id="desc3">Fekete Fém</div>
-    </div>
+        <div class="control-column">
+            <div class="controls">
+                <button class="arrow-button prev-btn" onclick="prevImage('tal')"><span class="arrow-icon">&#9664;</span>
+                </button>
+                <div class="title">
+                    <span class="image-label">Tál</span>
+                </div>
 
-    <div class="control-group">
-        <div class="control-title">
-            <button class="arrow-button prev-btn"><span class="arrow-icon">&#9664;</span></button>
-            <div>
-                <span class="image-label" id="label4">Fogantyú</span>
+                <button class="arrow-button next-btn" onclick="nextImage('tal')"><span class="arrow-icon">&#9654;</span>
+                </button>
+
             </div>
-            <button class="arrow-button next-btn"><span class="arrow-icon">&#9654;</span></button>
+            <div class="description" id="tal-description">Világos fa (szélezett)</div>
+            <div class="dropdown">
+                <select id="tal-dropdown" onchange="updatePrice()"></select>
+            </div>
         </div>
-        <div class="description" id="desc4">Sötét fa (natúr)</div>
     </div>
 
+
+    <!-- Checkboxes -->
+    <div class="checkboxes" style="display: flex; justify-content: center; align-items: center;">
+        <span style="font-size: 18px; font-weight: bold; margin-right: 10px;">Választható Extrák: </span>
+        <label style="font-size: 18px; font-weight: bold; margin-right: 10px;">
+            <input type="checkbox" id="fogantyu-checkbox" onchange="updatePrice()"> Fogantyú (+3000 Ft)
+        </label>
+        <br>
+        <label style="font-size: 18px; font-weight: bold; margin-right: 10px;">
+            <input type="checkbox" id="gravirozas-checkbox" onchange="updatePrice()"> Gravírozás (+6000 Ft).
+        </label>
+        A gravírozás szövegét a megrendelésben kérjük
+    </div>
+
+    <!-- Price Display -->
+    <div class="price-display">
+        Becsült ár: <span id="final-price">0</span> Ft
+    </div>
 </div>
 
 <script>
-
-    document.getElementById("asztallap")
-
-    // JavaScript to handle arrow navigation and update layers
-    document.querySelectorAll('.control-group').forEach((group, layerIndex) => {
-        const layerClass = `.layer${layerIndex + 1}`;
-        const images = document.querySelectorAll(layerClass);
-        const label = document.querySelector(`#label${layerIndex + 1}`);
-        const description = document.querySelector(`#desc${layerIndex + 1}`);
-        let currentIndex = 0;
-
-        // Array to hold descriptions for each image
-        const descriptions = [
-            ['Állítható lábak 1', 'Állítható lábak 2', 'Teli Négyzet', 'Üres Négyzet'],
-            ['Világos fa (szélezett)', 'Fekete dió'],
-            ['Fekete Fém', 'Fém (gyémántmintás)', 'Tál Mate'],
-            ['Sötét fa (natúr)'],
-        ];
-
-        // Update the active image, label, and description
-        function updateLayer() {
-            images.forEach((img, index) => {
-                img.classList.toggle('active', index === currentIndex);
-            });
-            label.textContent = ['Láb', 'Asztallap', 'Tál', 'Fogantyú'][layerIndex];
-            description.textContent = descriptions[layerIndex][currentIndex];
-        }
-
-        // Previous button click
-        group.querySelector('.prev-btn').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateLayer();
+    const productData = {
+        asztallap: [
+            {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
+            {name: "Szélezett dió", props: [{"size": "", price: 10000}]},
+        ],
+        lab: [
+            {name: "Kicsi bútorláb", props: [{size: "10 cm", price: 10000}]},
+            {name: "Nagy bútorláb", props: [{size: "15 cm", price: 12000}]},
+            {
+                "name": "Fa láb",
+                "props": [
+                    {
+                        "size": "20 cm-ig",
+                        "price": 10000
+                    }, {
+                        "size": "22 cm",
+                        "price": 12000
+                    }, {
+                        "size": "24 cm",
+                        "price": 14000
+                    }, {
+                        "size": "26 cm",
+                        "price": 16000
+                    }, {
+                        "size": "28 cm",
+                        "price": 18000
+                    }, {
+                        "size": "30 cm",
+                        "price": 20000
+                    }
+                ]
+            }, {
+                "name": "Fém láb",
+                "props": [
+                    {
+                        "size": "20 cm-ig",
+                        "price": 20000
+                    }, {
+                        "size": "22 cm",
+                        "price": 22000
+                    }, {
+                        "size": "24 cm",
+                        "price": 24000
+                    }, {
+                        "size": "26 cm",
+                        "price": 26000
+                    }, {
+                        "size": "28 cm",
+                        "price": 28000
+                    }, {
+                        "size": "30 cm",
+                        "price": 30000
+                    }
+                ]
             }
+        ],
+        tal: [
+            {
+                name: "Fekete tál", props: [{
+                    "size": "17 cm",
+                    "price": 5000
+                }, {
+                    "size": "21 cm",
+                    "price": 6000
+                }]
+            },
+            {
+                name: "Króm tál", props: [{
+                    "size": "13, 5 cm",
+                    "price": 2000
+                }, {
+                    "size": "16, 5 cm",
+                    "price": 3000
+                }, {
+                    "size": "21 cm",
+                    "price": 4000
+                }]
+            },
+            {
+                "name": "Fehér tál",
+                "props": [
+                    {
+                        "size": "17 cm",
+                        "price": 5000
+                    }, {
+                        "size": "16,5 cm",
+                        "price": 3000
+                    }, {
+                        "size": "21 cm",
+                        "price": 4000
+                    }
+                ]
+            }
+        ],
+    };
+
+    let currentIndexes = {asztallap: 0, lab: 0, tal: 0};
+
+    function populateCarousel(type) {
+        const carousel = document.getElementById(`${type}-carousel`);
+        productData[type].forEach((item, index) => {
+            const img = document.createElement("img");
+            img.src = `${type}${index + 1}.png`;
+            img.alt = item.name;
+            img.className = index === 0 ? "active" : "";
+            img.dataset.price = item.props[0].price;
+            carousel.appendChild(img);
+        });
+    }
+
+    function updateDropdown(type) {
+        const dropdown = document.getElementById(`${type}-dropdown`);
+        dropdown.innerHTML = "";
+        productData[type][currentIndexes[type]].props.forEach((prop) => {
+            const option = document.createElement("option");
+            option.value = prop.price;
+            option.textContent = `${prop.size} ${prop.size ? '-' : ''} ${prop.price} Ft`;
+            dropdown.appendChild(option);
+        });
+    }
+
+    function prevImage(type) {
+        const carousel = document.getElementById(`${type}-carousel`);
+        const images = carousel.querySelectorAll("img");
+        images[currentIndexes[type]].classList.remove("active");
+        currentIndexes[type] = (currentIndexes[type] - 1 + images.length) % images.length;
+        images[currentIndexes[type]].classList.add("active");
+        updateDropdown(type);
+        updatePrice();
+    }
+
+    function nextImage(type) {
+        const carousel = document.getElementById(`${type}-carousel`);
+        const images = carousel.querySelectorAll("img");
+        images[currentIndexes[type]].classList.remove("active");
+        currentIndexes[type] = (currentIndexes[type] + 1) % images.length;
+        images[currentIndexes[type]].classList.add("active");
+        updateDropdown(type);
+        updatePrice();
+    }
+
+    function updatePrice() {
+        let finalPrice = 0;
+        ["asztallap", "lab", "tal"].forEach((type) => {
+            const carousel = document.getElementById(`${type}-carousel`);
+            const activeImg = carousel.querySelector("img.active");
+            finalPrice += parseInt(activeImg.dataset.price, 10);
         });
 
-        // Next button click
-        group.querySelector('.next-btn').addEventListener('click', () => {
-            if (currentIndex < images.length - 1) {
-                currentIndex++;
-                updateLayer();
-            }
-        });
+        const labDropdown = document.getElementById("lab-dropdown");
+        const talDropdown = document.getElementById("tal-dropdown");
+
+        finalPrice += parseInt(labDropdown.value || 0, 10);
+        finalPrice += parseInt(talDropdown.value || 0, 10);
+
+        if (document.getElementById("fogantyu-checkbox").checked) finalPrice += 3000;
+        if (document.getElementById("gravirozas-checkbox").checked) finalPrice += 6000;
+
+        document.getElementById("final-price").textContent = finalPrice;
+    }
+
+    // Initialize carousels and dropdowns
+    ["asztallap", "lab", "tal"].forEach((type) => {
+        populateCarousel(type);
+        updateDropdown(type);
     });
+
+    updatePrice();
 </script>
 
 </body>
