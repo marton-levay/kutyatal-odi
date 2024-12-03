@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background: radial-gradient(circle, rgba(118,112,130,1) 35%, rgba(59,56,65,1) 100%);
+            background: radial-gradient(circle, rgba(118, 112, 130, 1) 35%, rgba(59, 56, 65, 1) 100%);
         }
 
         .carousel-container {
@@ -17,7 +17,7 @@
             height: 650px;
             margin: 0 auto;
             overflow: hidden;
-            background-color: rgba(159,154,167,1);
+            background-color: rgba(159, 154, 167, 1);
             border: 1px solid #ccc;
         }
 
@@ -51,6 +51,9 @@
         }
 
         .price-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-weight: bold;
             font-size: 1.2em;
             margin-top: 20px;
@@ -107,6 +110,63 @@
             flex-direction: column;
             align-items: center;
             margin: 10px;
+        }
+
+        .send-email-button {
+            appearance: none;
+            background-color: #FAFBFC;
+            border: 1px solid rgba(27, 31, 35, 0.15);
+            border-radius: 6px;
+            box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+            box-sizing: border-box;
+            color: #24292E;
+            cursor: pointer;
+            display: inline-block;
+            font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            list-style: none;
+            padding: 6px 16px;
+            position: relative;
+            transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: middle;
+            white-space: nowrap;
+            word-wrap: break-word;
+        }
+
+        .send-email-button:hover {
+            background-color: #F3F4F6;
+            text-decoration: none;
+            transition-duration: 0.1s;
+        }
+
+        .send-email-button:disabled {
+            background-color: #FAFBFC;
+            border-color: rgba(27, 31, 35, 0.15);
+            color: #959DA5;
+            cursor: default;
+        }
+
+        .send-email-button:active {
+            background-color: #EDEFF2;
+            box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+            transition: none 0s;
+        }
+
+        .send-email-button:focus {
+            outline: 1px transparent;
+        }
+
+        .send-email-button:before {
+            display: none;
+        }
+
+        .send-email-button::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
@@ -192,7 +252,8 @@
 
     <!-- Price Display -->
     <div class="price-display">
-        Becsült ár: <span id="final-price">0</span> Ft
+        <span style="margin-right: 10px">Becsült ár: <span id="final-price">0</span> Ft</span>
+        <button class="send-email-button" onclick="sendEmail()">Visszahívás kérése a választott elemekkel</button>
     </div>
 </div>
 
@@ -307,7 +368,7 @@
             const img = document.createElement("img");
             img.src = `${type}${index + 1}.png`;
             img.alt = item.name;
-            if(["fogantyu", "gravirozas"].includes(type)){
+            if (["fogantyu", "gravirozas"].includes(type)) {
                 img.className = "";
             } else {
                 img.className = index === 0 ? "active" : "";
@@ -373,11 +434,11 @@
         if (document.getElementById("fogantyu-checkbox").checked) {
             finalPrice += 3000;
             document.getElementById("fogantyu-carousel")?.children[0]?.classList?.add("active");
-        }else{
+        } else {
             document.getElementById("fogantyu-carousel")?.children[0]?.classList?.remove("active");
         }
 
-        if (document.getElementById("gravirozas-checkbox").checked){
+        if (document.getElementById("gravirozas-checkbox").checked) {
             finalPrice += 6000;
             document.getElementById("gravirozas-carousel")?.children[0]?.classList?.add("active");
         } else {
@@ -387,8 +448,27 @@
         document.getElementById("final-price").textContent = finalPrice;
     }
 
+    async function sendEmail() {
+        const data = new FormData();
+        data.append('action', 'mail_before_submit');
+        data.append('to', 'retekraja@gmail.com');
+        data.append('title', 'Új megrendelés az odi wood-ról');
+        data.append('text', `
+            Tál:
+            Láb:
+            Asztal:
+            Fogantyú: ${document.getElementById("fogantyu-checkbox").checked}
+            Gravírozás: ${document.getElementById("gravirozas-checkbox").checked}
+        `);
+        const rawResponse = await fetch('https://mywordpressinstallation.com/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            body: data,
+        });
+        console.log('rawResponse: ', rawResponse);
+    }
+
     // Initialize carousels and dropdowns
-    ["asztallap", "lab", "tal",  "fogantyu", "gravirozas"].forEach((type) => {
+    ["asztallap", "lab", "tal", "fogantyu", "gravirozas"].forEach((type) => {
         populateCarousel(type);
     });
     ["asztallap", "lab", "tal"].forEach((type) => {
