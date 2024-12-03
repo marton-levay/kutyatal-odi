@@ -379,10 +379,14 @@
         });
     }
 
+    function getProduct(type) {
+        return productData[type][currentIndexes[type]];
+    }
+
     function updateDropdown(type) {
         const dropdown = document.getElementById(`${type}-dropdown`);
         dropdown.innerHTML = "";
-        productData[type][currentIndexes[type]].props.forEach((prop) => {
+        getProduct(type).props.forEach((prop) => {
             const option = document.createElement("option");
             option.value = prop.price;
             option.textContent = `${prop.size} ${prop.size ? '-' : ''} ${prop.price} Ft`;
@@ -392,7 +396,7 @@
 
     function updateDescription(type) {
         const description = document.getElementById(`${type}-description`);
-        description.innerHTML = productData[type][currentIndexes[type]].name;
+        description.innerHTML = getProduct(type).name;
     }
 
     function prevImage(type) {
@@ -449,18 +453,19 @@
     }
 
     async function sendEmail() {
+        console.log('attempting to send email: ');
         const data = new FormData();
         data.append('action', 'mail_before_submit');
         data.append('to', 'retekraja@gmail.com');
         data.append('title', 'Új megrendelés az odi wood-ról');
         data.append('text', `
-            Tál:
-            Láb:
-            Asztal:
+            Tál: ${getProduct("tal").name} - ${document.getElementById("tal-dropdown").value}
+            Láb: ${getProduct("lab").name} - ${document.getElementById("lab-dropdown").value}
+            Asztallap: ${getProduct("asztallap").name}
             Fogantyú: ${document.getElementById("fogantyu-checkbox").checked}
             Gravírozás: ${document.getElementById("gravirozas-checkbox").checked}
         `);
-        const rawResponse = await fetch('https://mywordpressinstallation.com/wp-admin/admin-ajax.php', {
+        const rawResponse = await fetch('https://www.odi-wood.hu/wp-admin/admin-ajax.php', {
             method: 'POST',
             body: data,
         });
