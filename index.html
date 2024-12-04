@@ -204,8 +204,8 @@
             margin: 20px; ">
 
     <div class="tal-number-switch" id="tal-number-switch">
-        <button id="egy-tal-button" class="send-email-button active" onClick="toggleTal(1)">Egytálas</button>
-        <button id="ketto-tal-button" class="send-email-button" onClick="toggleTal(2)">Kéttálas</button>
+        <button id="egy-tal-button" class="send-email-button" onClick="toggleTal(1)">Egytálas</button>
+        <button id="ketto-tal-button" class="send-email-button active" onClick="toggleTal(2)">Kéttálas</button>
     </div>
 
     <div class="carousel-container">
@@ -296,9 +296,7 @@
     <!-- Price Display -->
     <div class="price-display">
         <span style="margin-right: 10px">Becsült ár: <span id="final-price">0</span> Ft</span>
-        <button class="send-email-button" id="send-email-button" onclick="sendEmail()" disabled>Visszahívás kérése a
-            választott elemekkel
-        </button>
+        <button class="send-email-button" id="send-email-button" onclick="sendEmail()" disabled>Megrendelem</button>
     </div>
 </div>
 
@@ -311,7 +309,7 @@
                 {name: "Fém fogantyú", props: [{size: "", price: 3000}]}
             ],
             gravirozas: [
-                {name: "Név gravírozás", props: [{size: "", price: 6000}]}
+                {name: "Név gravírozás", props: [{size: "", price: 5000}]}
             ],
             asztallap: [
                 {name: "Szélezetlen dió", props: [{"size": "", price: 5000}]},
@@ -412,7 +410,7 @@
                 {name: "Fém fogantyú", props: [{size: "", price: 3000}]}
             ],
             gravirozas: [
-                {name: "Név gravírozás", props: [{size: "", price: 6000}]}
+                {name: "Név gravírozás", props: [{size: "", price: 5000}]}
             ],
             asztallap: [
                 {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
@@ -511,7 +509,7 @@
     };
 
     let currentIndexes = {asztallap: 0, lab: 0, tal: 0};
-    let currentTalNumber = 1;
+    let currentTalNumber = 2;
 
     function initializePage() {
         currentIndexes = {asztallap: 0, lab: 0, tal: 0};
