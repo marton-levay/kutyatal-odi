@@ -268,7 +268,10 @@
         <label style="font-size: 18px; font-weight: bold; margin-right: 10px;">
             <input type="checkbox" id="gravirozas-checkbox" onchange="updatePrice()"> Gravírozás (+6000 Ft).
         </label>
-        A gravírozás szövegét a megrendelésben kérjük
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
+        <label style="font-size: 16px; font-weight: bold; margin-bottom: 10px;" for="comment-textarea">Gravírozás szövege és egyéb megjegyzések:</label>
+        <textarea id="comment-textarea" cols="80" rows="5" maxlength="2000"></textarea>
     </div>
 
     <!-- Price Display -->
@@ -593,19 +596,21 @@
     }
 
     async function sendEmail() {
-        console.log('attempting to send email: ');
-        const data = new FormData();
-        data.append('action', 'mail_before_submit');
-        data.append('to', 'info@odi-wood.hu');
-        data.append('title', 'Új megrendelés az odi wood-ról');
-        data.append('text', `
+        const emailText = `
             Tálak száma: ${currentTalNumber}
             Tál: ${getProduct("tal").name} - ${document.getElementById("tal-dropdown").value}
             Láb: ${getProduct("lab").name} - ${document.getElementById("lab-dropdown").value}
             Asztallap: ${getProduct("asztallap").name}
             Fogantyú: ${document.getElementById("fogantyu-checkbox").checked}
             Gravírozás: ${document.getElementById("gravirozas-checkbox").checked}
-        `);
+            Megjegyzés: ${document.getElementById("comment-textarea").value}
+        `
+        console.log('attempting to send email: ', emailText);
+        const data = new FormData();
+        data.append('action', 'mail_before_submit');
+        data.append('to', 'info@odi-wood.hu');
+        data.append('title', 'Új megrendelés az odi wood-ról');
+        data.append('text', emailText);
         const rawResponse = await fetch('https://www.odi-wood.hu/wp-admin/admin-ajax.php', {
             method: 'POST',
             body: data,
