@@ -119,7 +119,7 @@
             border-radius: 6px;
             box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
             box-sizing: border-box;
-            color: #24292E;
+            color: grey;
             cursor: pointer;
             display: inline-block;
             font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -168,12 +168,33 @@
         .send-email-button::-webkit-details-marker {
             display: none;
         }
+
+        .send-email-button.active{
+            color: black;
+            background: #e0e0e0;
+            box-shadow: inset 20px 20px 60px #bebebe,
+                        inset -20px -20px 60px #ffffff;
+        }
+
+        .tal-number-switch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
 
 <!-- Image Carousels -->
 <div style="display: flex; flex-direction: column; ">
+
+    <div class="tal-number-switch" id="tal-number-switch">
+        <button id="egy-tal-button" class="send-email-button active" onClick="toggleTal(1)">Egytálas</button>
+        <button id="ketto-tal-button" class="send-email-button" onClick="toggleTal(2)">Kéttálas</button>
+    </div>
+
     <div class="carousel-container">
 
         <div class="carousel" id="lab-carousel"></div>
@@ -188,12 +209,12 @@
         <div class="control-column">
             <div class="controls">
                 <button class="arrow-button prev-btn" onclick="prevImage('asztallap')"><span
-                        class="arrow-icon">&#9664;</span></button>
+                        class="arrow-icon"> < </span></button>
                 <div class="title">
                     <span class="image-label">Asztallap</span>
                 </div>
                 <button class="arrow-button next-btn" onclick="nextImage('asztallap')"><span
-                        class="arrow-icon">&#9654;</span></button>
+                        class="arrow-icon"> > </span></button>
             </div>
             <div class="description" id="asztallap-description"></div>
             <div class="dropdown">
@@ -203,12 +224,12 @@
 
         <div class="control-column">
             <div class="controls">
-                <button class="arrow-button prev-btn" onclick="prevImage('lab')"><span class="arrow-icon">&#9664;</span>
+                <button class="arrow-button prev-btn" onclick="prevImage('lab')"><span class="arrow-icon"><</span>
                 </button>
                 <div class="title">
                     <span class="image-label">Láb</span>
                 </div>
-                <button class="arrow-button next-btn" onclick="nextImage('lab')"><span class="arrow-icon">&#9654;</span>
+                <button class="arrow-button next-btn" onclick="nextImage('lab')"><span class="arrow-icon">></span>
                 </button>
 
             </div>
@@ -219,13 +240,13 @@
         </div>
         <div class="control-column">
             <div class="controls">
-                <button class="arrow-button prev-btn" onclick="prevImage('tal')"><span class="arrow-icon">&#9664;</span>
+                <button class="arrow-button prev-btn" onclick="prevImage('tal')"><span class="arrow-icon"><</span>
                 </button>
                 <div class="title">
                     <span class="image-label">Tál</span>
                 </div>
 
-                <button class="arrow-button next-btn" onclick="nextImage('tal')"><span class="arrow-icon">&#9654;</span>
+                <button class="arrow-button next-btn" onclick="nextImage('tal')"><span class="arrow-icon">></span>
                 </button>
 
             </div>
@@ -258,115 +279,234 @@
 </div>
 
 <script>
+
+
     const productData = {
-        fogantyu: [
-            {name: "Fém fogantyú", props: [{size: "", price: 3000}]}
-        ],
-        gravirozas: [
-            {name: "Név gravírozás", props: [{size: "", price: 6000}]}
-        ],
-        asztallap: [
-            {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
-            {name: "Szélezett dió", props: [{"size": "", price: 10000}]},
-        ],
-        lab: [
-            {name: "Kicsi bútorláb", props: [{size: "10 cm", price: 10000}]},
-            {name: "Nagy bútorláb", props: [{size: "15 cm", price: 12000}]},
-            {
-                "name": "Fa láb",
-                "props": [
-                    {
-                        "size": "20 cm-ig",
-                        "price": 10000
-                    }, {
-                        "size": "22 cm",
-                        "price": 12000
-                    }, {
-                        "size": "24 cm",
-                        "price": 14000
-                    }, {
-                        "size": "26 cm",
-                        "price": 16000
-                    }, {
-                        "size": "28 cm",
-                        "price": 18000
-                    }, {
-                        "size": "30 cm",
-                        "price": 20000
-                    }
-                ]
-            }, {
-                "name": "Fém láb",
-                "props": [
-                    {
-                        "size": "20 cm-ig",
-                        "price": 20000
-                    }, {
-                        "size": "22 cm",
-                        "price": 22000
-                    }, {
-                        "size": "24 cm",
-                        "price": 24000
-                    }, {
-                        "size": "26 cm",
-                        "price": 26000
-                    }, {
-                        "size": "28 cm",
-                        "price": 28000
-                    }, {
-                        "size": "30 cm",
-                        "price": 30000
-                    }
-                ]
-            }
-        ],
-        tal: [
-            {
-                name: "Fekete tál", props: [{
-                    "size": "17 cm",
-                    "price": 5000
+        1: {
+            fogantyu: [
+                {name: "Fém fogantyú", props: [{size: "", price: 3000}]}
+            ],
+            gravirozas: [
+                {name: "Név gravírozás", props: [{size: "", price: 6000}]}
+            ],
+            asztallap: [
+                {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
+                {name: "Szélezett dió", props: [{"size": "", price: 10000}]},
+            ],
+            lab: [
+                {name: "Kicsi bútorláb", props: [{size: "10 cm", price: 10000}]},
+                {name: "Nagy bútorláb", props: [{size: "15 cm", price: 12000}]},
+                {
+                    "name": "Fa láb",
+                    "props": [
+                        {
+                            "size": "20 cm-ig",
+                            "price": 10000
+                        }, {
+                            "size": "22 cm",
+                            "price": 12000
+                        }, {
+                            "size": "24 cm",
+                            "price": 14000
+                        }, {
+                            "size": "26 cm",
+                            "price": 16000
+                        }, {
+                            "size": "28 cm",
+                            "price": 18000
+                        }, {
+                            "size": "30 cm",
+                            "price": 20000
+                        }
+                    ]
                 }, {
-                    "size": "21 cm",
-                    "price": 6000
-                }]
-            },
-            {
-                name: "Króm tál", props: [{
-                    "size": "13, 5 cm",
-                    "price": 2000
-                }, {
-                    "size": "16, 5 cm",
-                    "price": 3000
-                }, {
-                    "size": "21 cm",
-                    "price": 4000
-                }]
-            },
-            {
-                "name": "Fehér tál",
-                "props": [
-                    {
+                    "name": "Fém láb",
+                    "props": [
+                        {
+                            "size": "20 cm-ig",
+                            "price": 20000
+                        }, {
+                            "size": "22 cm",
+                            "price": 22000
+                        }, {
+                            "size": "24 cm",
+                            "price": 24000
+                        }, {
+                            "size": "26 cm",
+                            "price": 26000
+                        }, {
+                            "size": "28 cm",
+                            "price": 28000
+                        }, {
+                            "size": "30 cm",
+                            "price": 30000
+                        }
+                    ]
+                }
+            ],
+            tal: [
+                {
+                    name: "Fekete tál", props: [{
                         "size": "17 cm",
                         "price": 5000
                     }, {
-                        "size": "16,5 cm",
+                        "size": "21 cm",
+                        "price": 6000
+                    }]
+                },
+                {
+                    name: "Króm tál", props: [{
+                        "size": "13, 5 cm",
+                        "price": 2000
+                    }, {
+                        "size": "16, 5 cm",
                         "price": 3000
                     }, {
                         "size": "21 cm",
                         "price": 4000
-                    }
-                ]
-            }
-        ],
+                    }]
+                },
+                {
+                    "name": "Fehér tál",
+                    "props": [
+                        {
+                            "size": "17 cm",
+                            "price": 5000
+                        }, {
+                            "size": "16,5 cm",
+                            "price": 3000
+                        }, {
+                            "size": "21 cm",
+                            "price": 4000
+                        }
+                    ]
+                }
+            ],
+        },
+        2: {
+            fogantyu: [
+                {name: "Fém fogantyú", props: [{size: "", price: 3000}]}
+            ],
+            gravirozas: [
+                {name: "Név gravírozás", props: [{size: "", price: 6000}]}
+            ],
+            asztallap: [
+                {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
+                {name: "Szélezett dió", props: [{"size": "", price: 10000}]},
+            ],
+            lab: [
+                {name: "Kicsi bútorláb", props: [{size: "10 cm", price: 10000}]},
+                {name: "Nagy bútorláb", props: [{size: "15 cm", price: 12000}]},
+                {
+                    "name": "Fa láb",
+                    "props": [
+                        {
+                            "size": "20 cm-ig",
+                            "price": 10000
+                        }, {
+                            "size": "22 cm",
+                            "price": 12000
+                        }, {
+                            "size": "24 cm",
+                            "price": 14000
+                        }, {
+                            "size": "26 cm",
+                            "price": 16000
+                        }, {
+                            "size": "28 cm",
+                            "price": 18000
+                        }, {
+                            "size": "30 cm",
+                            "price": 20000
+                        }
+                    ]
+                }, {
+                    "name": "Fém láb",
+                    "props": [
+                        {
+                            "size": "20 cm-ig",
+                            "price": 20000
+                        }, {
+                            "size": "22 cm",
+                            "price": 22000
+                        }, {
+                            "size": "24 cm",
+                            "price": 24000
+                        }, {
+                            "size": "26 cm",
+                            "price": 26000
+                        }, {
+                            "size": "28 cm",
+                            "price": 28000
+                        }, {
+                            "size": "30 cm",
+                            "price": 30000
+                        }
+                    ]
+                }
+            ],
+            tal: [
+                {
+                    name: "Fekete tál", props: [{
+                        "size": "17 cm",
+                        "price": 5000
+                    }, {
+                        "size": "21 cm",
+                        "price": 6000
+                    }]
+                },
+                {
+                    name: "Króm tál", props: [{
+                        "size": "13, 5 cm",
+                        "price": 2000
+                    }, {
+                        "size": "16, 5 cm",
+                        "price": 3000
+                    }, {
+                        "size": "21 cm",
+                        "price": 4000
+                    }]
+                },
+                {
+                    "name": "Fehér tál",
+                    "props": [
+                        {
+                            "size": "17 cm",
+                            "price": 5000
+                        }, {
+                            "size": "16,5 cm",
+                            "price": 3000
+                        }, {
+                            "size": "21 cm",
+                            "price": 4000
+                        }
+                    ]
+                }
+            ],
+        }
     };
 
     let currentIndexes = {asztallap: 0, lab: 0, tal: 0};
+    let currentTalNumber = 1;
+
+    function initializePage(){
+        currentIndexes = {asztallap: 0, lab: 0, tal: 0};
+        ["asztallap", "lab", "tal", "fogantyu", "gravirozas"].forEach((type) => {
+            populateCarousel(type);
+        });
+        ["asztallap", "lab", "tal"].forEach((type) => {
+            updateDropdown(type);
+            updateDescription(type);
+        });
+        updatePrice();
+    }
 
     function populateCarousel(type) {
         const carousel = document.getElementById(`${type}-carousel`);
-        productData[type].forEach((item, index) => {
+        carousel.replaceChildren();
+        productData[currentTalNumber][type].forEach((item, index) => {
             const img = document.createElement("img");
-            img.src = `${type}${index + 1}.png`;
+            img.src = `https://www.odi-wood.hu/wp-content/uploads/2024/12/${currentTalNumber === 1 ? '1tal_' : ''}${type}${index + 1}.png`;
             img.alt = item.name;
             if (["fogantyu", "gravirozas"].includes(type)) {
                 img.className = "";
@@ -380,7 +520,7 @@
     }
 
     function getProduct(type) {
-        return productData[type][currentIndexes[type]];
+        return productData[currentTalNumber][type][currentIndexes[type]];
     }
 
     function updateDropdown(type) {
@@ -456,9 +596,10 @@
         console.log('attempting to send email: ');
         const data = new FormData();
         data.append('action', 'mail_before_submit');
-        data.append('to', 'retekraja@gmail.com');
+        data.append('to', 'info@odi-wood.hu');
         data.append('title', 'Új megrendelés az odi wood-ról');
         data.append('text', `
+            Tálak száma: ${currentTalNumber}
             Tál: ${getProduct("tal").name} - ${document.getElementById("tal-dropdown").value}
             Láb: ${getProduct("lab").name} - ${document.getElementById("lab-dropdown").value}
             Asztallap: ${getProduct("asztallap").name}
@@ -472,16 +613,21 @@
         console.log('rawResponse: ', rawResponse);
     }
 
-    // Initialize carousels and dropdowns
-    ["asztallap", "lab", "tal", "fogantyu", "gravirozas"].forEach((type) => {
-        populateCarousel(type);
-    });
-    ["asztallap", "lab", "tal"].forEach((type) => {
-        updateDropdown(type);
-        updateDescription(type);
-    });
+    function toggleTal(talnumber){
+        currentTalNumber = talnumber;
+        const egytalButton = document.getElementById("egy-tal-button");
+        const kettotalButton = document.getElementById("ketto-tal-button");
+        if(talnumber === 1 && !egytalButton.classList.contains("active")){
+            egytalButton.classList.add("active");
+            kettotalButton.classList.remove("active");
+        } else if (talnumber === 2 && !kettotalButton.classList.contains("active")) {
+            egytalButton.classList.remove("active");
+            kettotalButton.classList.add("active");
+        }
+        initializePage();
+    }
+    initializePage();
 
-    updatePrice();
 </script>
 
 </body>
