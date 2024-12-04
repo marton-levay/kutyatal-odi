@@ -21,6 +21,10 @@
             border: 1px solid #ccc;
         }
 
+        .label {
+            font-size: 16px; font-weight: bold; margin-bottom: 5px; margin-top: 5px;
+        }
+
         .carousel {
             position: absolute;
             top: 0;
@@ -119,7 +123,7 @@
             border-radius: 6px;
             box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
             box-sizing: border-box;
-            color: grey;
+            color: black;
             cursor: pointer;
             display: inline-block;
             font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -270,7 +274,12 @@
         </label>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
-        <label style="font-size: 16px; font-weight: bold; margin-bottom: 10px;" for="comment-textarea">Gravírozás
+
+        <label class="label" for="email-address">Email:</label>
+        <input id="email-address"/>
+        <label class="label" for="phone-number">Telefonszám:</label>
+        <input id="phone-number"/>
+        <label class="label" for="comment-textarea">Gravírozás
             szövege, láb pontos mérete és egyéb megjegyzések:</label>
         <textarea id="comment-textarea" cols="80" rows="5" maxlength="2000"></textarea>
     </div>
@@ -278,7 +287,7 @@
     <!-- Price Display -->
     <div class="price-display">
         <span style="margin-right: 10px">Becsült ár: <span id="final-price">0</span> Ft</span>
-        <button class="send-email-button" onclick="sendEmail()">Visszahívás kérése a választott elemekkel</button>
+        <button class="send-email-button" id="send-email-button" onclick="sendEmail()" disabled >Visszahívás kérése a választott elemekkel</button>
     </div>
 </div>
 
@@ -503,6 +512,12 @@
             updateDescription(type);
         });
         updatePrice();
+
+        //NOTE LM: Yeah at this point I would need a third party for anything resembling sanity. As always, leopards ate my face.
+        setInterval(()=>{
+            document.getElementById("send-email-button").disabled = !(document.getElementById("email-address").value ||
+                document.getElementById("phone-number").value);
+        }, 50);
     }
 
     function populateCarousel(type) {
@@ -594,6 +609,7 @@
         }
 
         document.getElementById("final-price").textContent = finalPrice;
+
     }
 
     async function sendEmail() {
@@ -605,6 +621,8 @@
             Fogantyú: ${document.getElementById("fogantyu-checkbox").checked}
             Gravírozás: ${document.getElementById("gravirozas-checkbox").checked}
             Megjegyzés: ${document.getElementById("comment-textarea").value}
+            Email: ${document.getElementById("email-address").value}
+            Telefonszám: ${document.getElementById("phone-number").value}
         `
         console.log('attempting to send email: ', emailText);
         const data = new FormData();
