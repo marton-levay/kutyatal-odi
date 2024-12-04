@@ -6,21 +6,29 @@
     <title>Product Customization</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            display: flex;
+
         }
 
         .carousel-container {
             position: relative;
-            width: 650px;
-            height: 650px;
+            width: 350px;
+            height: 350px;
             margin: 0 auto;
             overflow: hidden;
         }
 
+        @media (min-width: 767px) {
+            .carousel-container {
+                width: 650px;
+                height: 650px;
+            }
+        }
+
         .label {
-            font-size: 16px; font-weight: bold; margin-bottom: 5px; margin-top: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 5px;
         }
 
         .carousel {
@@ -60,6 +68,7 @@
             font-size: 1.2em;
             margin-top: 20px;
             text-align: center;
+            flex-wrap: wrap;
         }
 
         .arrow-button {
@@ -191,7 +200,8 @@
 <body>
 
 <!-- Image Carousels -->
-<div style="display: flex; flex-direction: column; ">
+<div style="display: flex; flex-direction: column; font-family: Arial, sans-serif;
+            margin: 20px; ">
 
     <div class="tal-number-switch" id="tal-number-switch">
         <button id="egy-tal-button" class="send-email-button active" onClick="toggleTal(1)">Egytálas</button>
@@ -286,7 +296,9 @@
     <!-- Price Display -->
     <div class="price-display">
         <span style="margin-right: 10px">Becsült ár: <span id="final-price">0</span> Ft</span>
-        <button class="send-email-button" id="send-email-button" onclick="sendEmail()" disabled >Visszahívás kérése a választott elemekkel</button>
+        <button class="send-email-button" id="send-email-button" onclick="sendEmail()" disabled>Visszahívás kérése a
+            választott elemekkel
+        </button>
     </div>
 </div>
 
@@ -513,7 +525,7 @@
         updatePrice();
 
         //NOTE LM: Yeah at this point I would need a third party for anything resembling sanity. As always, leopards ate my face.
-        setInterval(()=>{
+        setInterval(() => {
             document.getElementById("send-email-button").disabled = !(document.getElementById("email-address").value ||
                 document.getElementById("phone-number").value);
         }, 50);
