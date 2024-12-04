@@ -169,11 +169,11 @@
             display: none;
         }
 
-        .send-email-button.active{
+        .send-email-button.active {
             color: black;
             background: #e0e0e0;
             box-shadow: inset 20px 20px 60px #bebebe,
-                        inset -20px -20px 60px #ffffff;
+            inset -20px -20px 60px #ffffff;
         }
 
         .tal-number-switch {
@@ -270,7 +270,8 @@
         </label>
     </div>
     <div style="display: flex; align-items: center; justify-content: center; flex-direction: column">
-        <label style="font-size: 16px; font-weight: bold; margin-bottom: 10px;" for="comment-textarea">Gravírozás szövege és egyéb megjegyzések:</label>
+        <label style="font-size: 16px; font-weight: bold; margin-bottom: 10px;" for="comment-textarea">Gravírozás
+            szövege és egyéb megjegyzések:</label>
         <textarea id="comment-textarea" cols="80" rows="5" maxlength="2000"></textarea>
     </div>
 
@@ -293,8 +294,8 @@
                 {name: "Név gravírozás", props: [{size: "", price: 6000}]}
             ],
             asztallap: [
-                {name: "Szélezetlen dió", props: [{"size": "", price: 9000}]},
-                {name: "Szélezett dió", props: [{"size": "", price: 10000}]},
+                {name: "Szélezetlen dió", props: [{"size": "", price: 5000}]},
+                {name: "Szélezett dió", props: [{"size": "", price: 6000}]},
             ],
             lab: [
                 {name: "Kicsi bútorláb", props: [{size: "10 cm", price: 10000}]},
@@ -351,22 +352,22 @@
                 {
                     name: "Fekete tál", props: [{
                         "size": "17 cm",
-                        "price": 5000
+                        "price": 2500
                     }, {
                         "size": "21 cm",
-                        "price": 6000
+                        "price": 3000
                     }]
                 },
                 {
                     name: "Króm tál", props: [{
                         "size": "13, 5 cm",
-                        "price": 2000
+                        "price": 1000
                     }, {
                         "size": "16, 5 cm",
-                        "price": 3000
+                        "price": 1500
                     }, {
                         "size": "21 cm",
-                        "price": 4000
+                        "price": 2000
                     }]
                 },
                 {
@@ -374,13 +375,13 @@
                     "props": [
                         {
                             "size": "17 cm",
-                            "price": 5000
+                            "price": 2500
                         }, {
                             "size": "16,5 cm",
-                            "price": 3000
+                            "price": 1500
                         }, {
                             "size": "21 cm",
-                            "price": 4000
+                            "price": 2000
                         }
                     ]
                 }
@@ -492,7 +493,7 @@
     let currentIndexes = {asztallap: 0, lab: 0, tal: 0};
     let currentTalNumber = 1;
 
-    function initializePage(){
+    function initializePage() {
         currentIndexes = {asztallap: 0, lab: 0, tal: 0};
         ["asztallap", "lab", "tal", "fogantyu", "gravirozas"].forEach((type) => {
             populateCarousel(type);
@@ -618,11 +619,11 @@
         console.log('rawResponse: ', rawResponse);
     }
 
-    function toggleTal(talnumber){
+    function toggleTal(talnumber) {
         currentTalNumber = talnumber;
         const egytalButton = document.getElementById("egy-tal-button");
         const kettotalButton = document.getElementById("ketto-tal-button");
-        if(talnumber === 1 && !egytalButton.classList.contains("active")){
+        if (talnumber === 1 && !egytalButton.classList.contains("active")) {
             egytalButton.classList.add("active");
             kettotalButton.classList.remove("active");
         } else if (talnumber === 2 && !kettotalButton.classList.contains("active")) {
@@ -631,6 +632,7 @@
         }
         initializePage();
     }
+
     initializePage();
 
 </script>
